@@ -146,9 +146,15 @@ export const transformOn: DirectiveTransform = (
             : `${
                 !__BROWSER__ && context.isTS ? `\n//@ts-ignore\n` : ``
               }(...args)`
-        } => ${hasMultipleStatements ? `{` : `(`}`,
+        } => ${hasMultipleStatements ? `{` : `_ctx.$runIfEffect(`}`,
         exp,
         hasMultipleStatements ? `}` : `)`,
+      ])
+    } else {
+      exp = createCompoundExpression([
+        `(...args) => _ctx.$runIfEffect((`,
+        exp, // () => Console.log("hi")
+        `)(...args))`,
       ])
     }
   }
