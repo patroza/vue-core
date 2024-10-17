@@ -150,6 +150,12 @@ export const transformOn: DirectiveTransform = (
         exp,
         hasMultipleStatements ? `}` : `)`,
       ])
+    } else {
+      exp = createCompoundExpression([
+        `(...args) => _ctx.$runIfEffect((`,
+        exp, // () => Console.log("hi")
+        `)(...args))`,
+      ])
     }
   }
 
